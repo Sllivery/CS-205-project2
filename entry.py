@@ -1,8 +1,5 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import accuracy_score
-from forward_selection import ForwardFeatureSelection
+from feature_selection import FeatureSelection
 
 file_name = ""
 
@@ -29,15 +26,18 @@ y = df.values[:, 0]
 # perform the algorithm
 while 1:
     algorithm_setting = input("Type the algorithm number you want to run: 1)ForwardSelection 2)Backward Elimination")
-    if algorithm_setting == "1":
+    if algorithm_setting == "1": # 1 and default are forward
         # perform predictions
-        k = ForwardFeatureSelection(k=3)
+        k = FeatureSelection(k=3)
         k.fit(X, y)
         print(k.best_accuracy)
         print(k.best_features)
         break
-    elif algorithm_setting == "2":
-        print("xxx")
+    elif algorithm_setting == "2": # 2 is backward
+        k = FeatureSelection(k=3, direction="backward")
+        k.fit(X, y)
+        print(k.best_accuracy)
+        print(k.best_features)
         break
     else:
         print("Input error, please use 1 or 2!")
