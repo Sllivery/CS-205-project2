@@ -7,13 +7,13 @@ print("Welcome to Siwei&Chuanye Fearture Selection Algorithm")
 while 1:
     file_setting = input("Select the file to test: 1)samll 2)large 3)xlarge")
     if file_setting == "1":
-        file_name = "CS170_small_Data__32.txt"
+        file_name = "CS170_small_Data__25.txt"
         break
     elif file_setting == "2":
-        file_name = "CS170_small_Data__32.txt"
+        file_name = "CS170_large_Data__16.txt"
         break
     elif file_setting == "3":
-        file_name = "CS170_small_Data__32.txt"
+        file_name = "CS170_XXXlarge_Data__12.txt"
         break
     else:
         print("Input error, please use 1 or 2 or 3!")
