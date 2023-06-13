@@ -1,8 +1,3 @@
-import pandas as pd
-
-# Create a DataFrame from a dictionary
-data = {'Name': ['John', 'Emma', 'Michael'],
-        'Age': [25, 28, 32],
-        'City': ['New York', 'London', 'Paris']}
-df = pd.DataFrame(data)
-print(df.values[:, [0,2]])
+list = [1,2,3,4,5,6,7,9]
+list2 = [1,2,3,4,5,8,9]
+print(set(list) > set(list2))

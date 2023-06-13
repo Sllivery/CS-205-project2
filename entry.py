@@ -1,3 +1,5 @@
+import datetime
+
 import pandas as pd
 from feature_selection import FeatureSelection
 
@@ -26,18 +28,25 @@ y = df.values[:, 0]
 # perform the algorithm
 while 1:
     algorithm_setting = input("Type the algorithm number you want to run: 1)ForwardSelection 2)Backward Elimination")
+    threshold = input("Type the threshold that you want to end the program early (from 0 to 1")
     if algorithm_setting == "1": # 1 and default are forward
         # perform predictions
-        k = FeatureSelection(k=3)
+        start = datetime.datetime.now()
+        k = FeatureSelection(k=3, threshold = threshold)
         k.fit(X, y)
         print(k.best_accuracy)
         print(k.best_features)
+        end = datetime.datetime.now()
+        print((end - start).seconds)
         break
     elif algorithm_setting == "2": # 2 is backward
-        k = FeatureSelection(k=3, direction="backward")
+        start = datetime.datetime.now()
+        k = FeatureSelection(k=3, direction="backward", threshold = threshold)
         k.fit(X, y)
         print(k.best_accuracy)
         print(k.best_features)
+        end = datetime.datetime.now()
+        print((end - start).seconds)
         break
     else:
         print("Input error, please use 1 or 2!")
