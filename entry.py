@@ -32,7 +32,7 @@ while 1:
     if algorithm_setting == "1": # 1 and default are forward
         # perform predictions
         start = datetime.datetime.now()
-        k = FeatureSelection(k=3, threshold = threshold)
+        k = FeatureSelection(k=3, threshold=float(threshold))
         k.fit(X, y)
         print(k.best_accuracy)
         print(k.best_features)
@@ -41,7 +41,7 @@ while 1:
         break
     elif algorithm_setting == "2": # 2 is backward
         start = datetime.datetime.now()
-        k = FeatureSelection(k=3, direction="backward", threshold = threshold)
+        k = FeatureSelection(k=3, direction="backward", threshold=float(threshold))
         k.fit(X, y)
         print(k.best_accuracy)
         print(k.best_features)

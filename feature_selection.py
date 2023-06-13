@@ -15,7 +15,7 @@ class FeatureSelection:
         self.k = k
         self.last_best_features = []
         self.threshold = threshold
-        self.termination_flag = False;
+        self.termination_flag = False
 
     def fit(self, X, y):
         self.best_accuracy = 0
@@ -45,7 +45,7 @@ class FeatureSelection:
                     self.best_accuracy = accuracy
                     self.best_features = temp_features
                 print("Using feature: " + str(temp_features) + ", accuracy is " + str(accuracy))
-            if self.direction == "backward" and set(self.last_best_features) > set(temp_features):
+            if self.direction == "backward" and (self.last_best_features.__len__() == 0 or set(self.last_best_features) > set(temp_features)):
                 X_temp = X[:, list(i)]
                 accuracy = self.evaluate(X_temp, y)
                 if accuracy > self.best_accuracy:
