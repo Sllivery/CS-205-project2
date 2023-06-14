@@ -1,11 +1,11 @@
 import itertools
-
-import numpy as np
+from warnings import simplefilter
 from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
-from sklearn.preprocessing import StandardScaler
 
 from knn import KNN
+simplefilter(action='ignore', category=FutureWarning)
 
 class FeatureSelection:
     def __init__(self, k=3, direction="forward", threshold=100):
@@ -61,8 +61,11 @@ class FeatureSelection:
     def evaluate(self, X, y):
         trainX, testX, trainY, testY = train_test_split(X, y, test_size=0.2, random_state=42)
         # wrapp the knn
-        classifier = KNN(self.k)
-        classifier.fit(trainX, trainY)
-        y_pred = classifier.predict(testX)
+        # classifier = KNN(self.k)
+        # classifier.fit(trainX, trainY)
+        # y_pred = classifier.predict(testX)
+        knn = KNeighborsClassifier(n_neighbors=self.k)
+        knn.fit(trainX, trainY)
+        y_pred = knn.predict(testX)
         accuracy = accuracy_score(testY, y_pred)
         return accuracy

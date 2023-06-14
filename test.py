@@ -1,3 +1,7 @@
-list = [1,2,3,4,5,6,7,9]
-list2 = [1,2,3,4,5,8,9]
-print(set(list) > set(list2))
+import pandas as pd
+
+pd.set_option("display.max_columns", None)
+df = pd.read_csv("diabetes_prediction_dataset.csv")
+print(df.head())
+df_slice = df.values[:10000, :]
+
