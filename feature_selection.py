@@ -1,9 +1,7 @@
 import itertools
 from warnings import simplefilter
 from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
-
 from knn import KNN
 simplefilter(action='ignore', category=FutureWarning)
 
@@ -30,17 +28,22 @@ class FeatureSelection:
                 if self.termination_flag:
                     return
         elif self.direction == "backward":
-            for i in range(num_features, 0, -1):
+            for i in range(num_features, -1, -1):
                 self.selection(combination_indexes, i, X, y)
                 if self.termination_flag:
                     return
 
     def selection(self, combination_indexes, i, X, y):
+        temp_best_score = 0
+        temp_best_features = []
         for i in itertools.combinations(combination_indexes, i + 1):
             temp_features = list(i)
             if self.direction == "forward" and set(temp_features) > set(self.last_best_features): # 如果当前集合是上一次最佳组合的超集，才使用当前的集合继续搜索
                 X_temp = X[:, list(i)]
                 accuracy = self.evaluate(X_temp, y)
+                if accuracy > temp_best_score:
+                    temp_best_score = accuracy
+                    temp_best_features = temp_features
                 if accuracy > self.best_accuracy:
                     self.best_accuracy = accuracy
                     self.best_features = temp_features
@@ -48,6 +51,9 @@ class FeatureSelection:
             if self.direction == "backward" and (self.last_best_features.__len__() == 0 or set(self.last_best_features) > set(temp_features)):
                 X_temp = X[:, list(i)]
                 accuracy = self.evaluate(X_temp, y)
+                if accuracy > temp_best_score:
+                    temp_best_score = accuracy
+                    temp_best_features = temp_features
                 if accuracy > self.best_accuracy:
                     self.best_accuracy = accuracy
                     self.best_features = temp_features
@@ -55,17 +61,14 @@ class FeatureSelection:
             if self.best_accuracy >= self.threshold:
                 self.termination_flag = True
                 return
-        self.last_best_features = self.best_features
+        self.last_best_features = temp_best_features
 
 
     def evaluate(self, X, y):
         trainX, testX, trainY, testY = train_test_split(X, y, test_size=0.2, random_state=42)
         # wrapp the knn
-        # classifier = KNN(self.k)
-        # classifier.fit(trainX, trainY)
-        # y_pred = classifier.predict(testX)
-        knn = KNeighborsClassifier(n_neighbors=self.k)
-        knn.fit(trainX, trainY)
-        y_pred = knn.predict(testX)
+        classifier = KNN(self.k)
+        classifier.fit(trainX, trainY)
+        y_pred = classifier.predict(testX)
         accuracy = accuracy_score(testY, y_pred)
         return accuracy
