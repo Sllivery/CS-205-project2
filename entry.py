@@ -1,28 +1,53 @@
 import datetime
 import pandas as pd
+from sklearn.preprocessing import StandardScaler
+
 from feature_selection import FeatureSelection
 
 file_name = ""
 
+def load_test_data():
+    # load data
+    df = pd.read_csv(file_name, delimiter='  ', header=None, engine='python')
+    X = df.values[:, 1:]
+    y = df.values[:, 0]
+    return X, y
+
+def load_real_world_data():
+    df = pd.read_csv(file_name, nrows=1000)
+    df.drop('HbA1c_level', axis=1, inplace=True)
+    df.drop(df[df['smoking_history'] == 'No Info'].index, inplace=True)
+    df['gender'].replace({'Female': 0, 'Male': 1}, inplace=True)
+    df['smoking_history'].replace({'never': 0, 'current': 1, 'former': 2, 'not current': 3, 'ever': 4}, inplace=True)
+    X = df.values[:, :-1]
+    y = df.values[:, -1]
+    sc = StandardScaler()
+    sc.fit(X)
+    X_scaled = sc.transform(X)
+    return X_scaled, y
+
 print("Welcome to Siwei&Chuanye Fearture Selection Algorithm")
 while 1:
-    file_setting = input("Select the file to test: 1)samll 2)large 3)xlarge")
+    file_setting = input("Select the file to test: 1)samll 2)large 3)xlarge 4)real_world:diabetes_prediction")
     if file_setting == "1":
         file_name = "CS170_small_Data__25.txt"
+        X,y = load_test_data()
         break
     elif file_setting == "2":
         file_name = "CS170_large_Data__16.txt"
+        X,y = load_test_data()
         break
     elif file_setting == "3":
         file_name = "CS170_XXXlarge_Data__12.txt"
+        X,y = load_test_data()
+        break
+    elif file_setting == "4":
+        file_name = "diabetes_prediction_dataset.csv"
+        X,y = load_real_world_data()
         break
     else:
-        print("Input error, please use 1 or 2 or 3!")
+        print("Input error, please use 1 or 2 or 3 or 4 !")
 
-# load data
-df = pd.read_csv(file_name, delimiter='  ', header=None, engine='python')
-X = df.values[:, 1:]
-y = df.values[:, 0]
 
 # perform the algorithm
 while 1:
